@@ -43,7 +43,7 @@ BASEURL = 'https://rest.nexmo.com'
 
 SMS_DIRECT_ROUTES = defaultdict(lambda: (u'sms', ('pin', )))
 SMS_DIRECT_ROUTES.update({
-    1: (u'sc/us/2fa', ('from', 'text', )),
+    1: (u'sc/us/2fa', ('from', 'text', 'type', )),
 })
 
 
