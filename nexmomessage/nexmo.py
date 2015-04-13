@@ -202,6 +202,9 @@ class NexmoMessage:
     def send_request_json(self, request):
         url = request
         req = urllib2.Request(url=url)
+
+        LOGGER.info(u'Nexmo request: %s', url)
+
         req.add_header('Accept', 'application/json')
         try:
             return json.load(urllib2.urlopen(req))
