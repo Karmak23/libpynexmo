@@ -181,7 +181,7 @@ class NexmoMessage:
             to_phone = phonenumbers.parse(params.get('to'), None)
             base_url = u"{0}/{1}/{2}".format(
                 server,
-                SMS_DIRECT_ROUTES.get(to_phone.country_code),
+                SMS_DIRECT_ROUTES[to_phone.country_code],
                 reqtype
             )
             self.request = u'{0}?{1}'.format(
