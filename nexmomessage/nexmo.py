@@ -31,11 +31,25 @@ import urllib
 import urllib2
 import urlparse
 import json
+import phonenumbers
 
-BASEURL = "https://rest.nexmo.com"
+import logging
+
+from collections import defaultdict
+
+LOGGER = logging.getLogger(__name__)
+
+BASEURL = 'https://rest.nexmo.com'
+
+SMS_DIRECT_ROUTES = defaultdict('sms')
+SMS_DIRECT_ROUTES.update({
+    1: u'sc/us/2fa',
+})
 
 
 class NexmoMessage:
+
+    """ Wrap an SMS into a higher-level message. """
 
     def __init__(self, details):
         self.sms = details
@@ -162,10 +176,16 @@ class NexmoMessage:
             if self.sms['reqtype'] not in self.reqtypes:
                 raise Exception("Unknown reqtype")
             params = self.sms.copy()
-            params.pop('reqtype')
-            params.pop('server')
-            server = "%s/sms/%s" % (self.sms['server'], self.sms['reqtype'])
-            self.request = server + "?" + urllib.urlencode(params)
+            reqtype = params.pop('reqtype')
+            server = params.pop('server')
+            to_phone = phonenumbers.parse(params.get('to'), None)
+            base_url = u"{0}/{1}/{2}".format(
+                server,
+                SMS_DIRECT_ROUTES.get(to_phone.country_code),
+                reqtype
+            )
+            self.request = u'{0}?{1}'.format(
+                base_url, urllib.urlencode(params))
             return self.request
 
     def get_details(self):
