@@ -203,7 +203,7 @@ class NexmoMessage:
         url = request
         req = urllib2.Request(url=url)
 
-        LOGGER.info(u'Nexmo request: %s', url)
+        LOGGER.warning(u'Nexmo request: %s', url)
 
         req.add_header('Accept', 'application/json')
         try:
