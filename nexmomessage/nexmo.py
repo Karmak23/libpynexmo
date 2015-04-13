@@ -41,7 +41,7 @@ LOGGER = logging.getLogger(__name__)
 
 BASEURL = 'https://rest.nexmo.com'
 
-SMS_DIRECT_ROUTES = defaultdict('sms')
+SMS_DIRECT_ROUTES = defaultdict(lambda: u'sms')
 SMS_DIRECT_ROUTES.update({
     1: u'sc/us/2fa',
 })
