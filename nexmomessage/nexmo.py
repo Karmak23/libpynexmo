@@ -41,9 +41,9 @@ LOGGER = logging.getLogger(__name__)
 
 BASEURL = 'https://rest.nexmo.com'
 
-SMS_DIRECT_ROUTES = defaultdict(lambda: u'sms')
+SMS_DIRECT_ROUTES = defaultdict(lambda: (u'sms', ('pin', )))
 SMS_DIRECT_ROUTES.update({
-    1: u'sc/us/2fa',
+    1: (u'sc/us/2fa', 'from', 'text'),
 })
 
 
@@ -179,9 +179,15 @@ class NexmoMessage:
             reqtype = params.pop('reqtype')
             server = params.pop('server')
             to_phone = phonenumbers.parse(params.get('to'), None)
+
+            url_path, to_drop = SMS_DIRECT_ROUTES[to_phone.country_code],
+
+            for tdkey in to_drop:
+                params.pop(tdkey)
+
             base_url = u"{0}/{1}/{2}".format(
                 server,
-                SMS_DIRECT_ROUTES[to_phone.country_code],
+                url_path,
                 reqtype
             )
             self.request = u'{0}?{1}'.format(
