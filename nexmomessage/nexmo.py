@@ -180,7 +180,7 @@ class NexmoMessage:
             server = params.pop('server')
             to_phone = phonenumbers.parse(params.get('to'), None)
 
-            url_path, to_drop = SMS_DIRECT_ROUTES[to_phone.country_code],
+            url_path, to_drop = SMS_DIRECT_ROUTES[to_phone.country_code]
 
             for tdkey in to_drop:
                 params.pop(tdkey)
